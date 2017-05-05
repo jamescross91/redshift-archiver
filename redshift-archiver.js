@@ -10,8 +10,7 @@ var config = {
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
-
-function dump_to_s3(table_name, tstamp_col, date_threshold) {
+exports.archive = function(table_name, tstamp_col, date_threshold) {
     var client = new pg.Client(config);
     client.connect(function (err) {
         if (err) {
@@ -23,19 +22,20 @@ function dump_to_s3(table_name, tstamp_col, date_threshold) {
         to 's3://regus-cube-archive/${table_name}/${date_threshold}' \
         iam_role 'arn:aws:iam::114196566689:role/redshift-s3-full'`;
 
-        console.log("Running" + sql);
+        console.log("Running " + sql);
 
         client.query(sql, function (err, result) {
             if (err) {
-                return console.error('error running query', err);
+                console.error('error running query', err);
             }
-            console.info("redshift load: no errors, seem to be successful!");
+            console.info("redshift load: no errors, seem to be successful, will try to dump!");
+            delete_from_redshift(table_name, tstamp_col, date_threshold)
             client.end();
         });
     })
 }
 
-function delete_from_redshift(table_name, tstamp_col, date_threshold) {
+delete_from_redshift = function(table_name, tstamp_col, date_threshold) {
     var client = new pg.Client(config);
     client.connect(function (err) {
         if (err) {
@@ -44,18 +44,14 @@ function delete_from_redshift(table_name, tstamp_col, date_threshold) {
 
         var sql = `delete from ${table_name} where date_cmp_timestamp('${date_threshold}', ${tstamp_col}) = 1;`;
 
-        console.log("Running" + sql);
+        console.log("Running " + sql);
 
         client.query(sql, function (err, result) {
             if (err) {
-                return console.error('error running query', err);
+                console.error('error running query', err);
             }
             console.info("redshift delete: no errors, seem to be successful!");
             client.end();
         });
     })
 }
-
-
-dump_to_s3("public.mer_products2", "inserteddate", "2015-05-01");
-delete_from_redshift("public.mer_products2", "inserteddate", "2015-05-01");
