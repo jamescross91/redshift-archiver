@@ -1,0 +1,11 @@
+{
+  "name": "redshift-archiver",
+  "version": "1.0.0",
+  "description": "Process for unloading data from Redshift to S3 based on a column time stamp",
+  "main": "index.js",
+  "author": "James Cross <mail@jamescross.io>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "aws-sdk": "^2.3.0"
+  }
+}
