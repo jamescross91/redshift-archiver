@@ -2,9 +2,9 @@ var pg = require('pg');
 
 var config = {
     user: 'croud_kevin',
-    database: 'cubeprojectdb', //env var: PGDATABASE
-    password: '3wps7duQDG', //env var: PGPASSWORD
-    host: 'regus-cube.cwcclxyklvva.eu-west-1.redshift.amazonaws.com', // Server hosting the postgres database
+    database: '', //env var: PGDATABASE
+    password: '', //env var: PGPASSWORD
+    host: '', // Server hosting the postgres database
     port: 5439, //env var: PGPORT
     max: 1, // max number of clients in the pool
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
