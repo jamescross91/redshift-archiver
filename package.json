@@ -6,6 +6,7 @@
   "author": "James Cross <mail@jamescross.io>",
   "license": "Apache-2.0",
   "dependencies": {
-    "aws-sdk": "^2.3.0"
+    "aws-sdk": "^2.3.0",
+    "pg": "^6.1.5"
   }
 }
