@@ -11,13 +11,13 @@ const config = {
 };
 
 exports.archive = function(table_name, tstamp_col, date_threshold) {
-    let client = new pg.Client(config);
+    var client = new pg.Client(config);
     client.connect(function (err) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
 
-        let sql = `unload \
+        var sql = `unload \
         ('select * from ${table_name} where date_cmp_timestamp(''${date_threshold}'', ${tstamp_col}) = 1') \
         to 's3://regus-cube-archive/${table_name}/${date_threshold}' \
         iam_role 'arn:aws:iam::114196566689:role/redshift-s3-full'`;
@@ -36,13 +36,13 @@ exports.archive = function(table_name, tstamp_col, date_threshold) {
 }
 
 delete_from_redshift = function(table_name, tstamp_col, date_threshold) {
-    let client = new pg.Client(config);
+    var client = new pg.Client(config);
     client.connect(function (err) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
 
-        let sql = `delete from ${table_name} where date_cmp_timestamp('${date_threshold}', ${tstamp_col}) = 1;`;
+        var sql = `delete from ${table_name} where date_cmp_timestamp('${date_threshold}', ${tstamp_col}) = 1;`;
 
         console.log("Running " + sql);
 

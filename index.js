@@ -30,8 +30,8 @@ function onScan(err, data) {
 }
 
 function get_cuttoff_date() {
-    let curr_date = new Date();
-    let new_date = new Date(curr_date);
+    var curr_date = new Date();
+    var new_date = new Date(curr_date);
 
     new_date.setFullYear(curr_date.getFullYear() -2);
 
